@@ -9,7 +9,8 @@ const UpdateItem = () => {
   const { id } = useParams();
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-  const [message, setMessage] = useState(''); // État pour le message de confirmation
+  const [message, setMessage] = useState(''); 
+
 
   useEffect(() => {
     if (id) {
