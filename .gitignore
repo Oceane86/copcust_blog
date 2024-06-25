@@ -9,3 +9,6 @@ export-users.js
 
 firebase-admin-config.js
 next-firebase-35299-firebase-adminsdk-gv0vy-31176805fa.json
+
+# Local Netlify folder
+.netlify

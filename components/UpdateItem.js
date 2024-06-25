@@ -9,8 +9,7 @@ const UpdateItem = () => {
   const { id } = useParams();
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-  const [message, setMessage] = useState(''); 
-
+  const [message, setMessage] = useState('');
 
   useEffect(() => {
     if (id) {
@@ -65,7 +64,7 @@ const UpdateItem = () => {
 
   return (
     <div style={styles.content}>
-      <h2 style={styles.header}>Modifier l'Article</h2>
+      <h2 style={styles.header}>Modifier l&apos;Article</h2>
       <form onSubmit={handleSubmit} style={styles.form}>
         <div style={styles.formGroup}>
           <label style={styles.label}>Titre</label>
@@ -74,7 +73,7 @@ const UpdateItem = () => {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             style={styles.input}
-            placeholder="Entrez le titre de l'article"
+            placeholder="Entrez le titre de l&apos;article"
           />
         </div>
         <div style={styles.formGroup}>

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Image from 'next/image';
 import db from '../utils/firestore';
 import { collection, query, orderBy, limit, startAfter, getDocs } from 'firebase/firestore';
 import DeleteItem from './DeleteItem';
@@ -16,47 +17,50 @@ const ListArticle = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetchItems();
-    calculateTotalItems();
-  }, [currentPage]); // Re-fetch items and calculate total items when currentPage changes
-
-  const fetchItems = async () => {
-    try {
-      let itemsQuery = query(
-        collection(db, "items"),
-        orderBy("title"),
-        limit(itemsPerPage)
-      );
-
-      if (currentPage > 1) {
-        itemsQuery = query(
+    const fetchItems = async () => {
+      try {
+        let itemsQuery = query(
           collection(db, "items"),
           orderBy("title"),
-          startAfter(lastVisible),
           limit(itemsPerPage)
         );
+
+        if (currentPage > 1) {
+          itemsQuery = query(
+            collection(db, "items"),
+            orderBy("title"),
+            startAfter(lastVisible),
+            limit(itemsPerPage)
+          );
+        }
+
+        const querySnapshot = await getDocs(itemsQuery);
+        const lastVisibleDoc = querySnapshot.docs[querySnapshot.docs.length - 1];
+        setLastVisible(lastVisibleDoc);
+        setItems(querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+        setIsEmpty(querySnapshot.empty);
+      } catch (error) {
+        console.error("Error fetching items: ", error);
       }
+    };
 
-      const querySnapshot = await getDocs(itemsQuery);
-      const lastVisibleDoc = querySnapshot.docs[querySnapshot.docs.length - 1];
-      setLastVisible(lastVisibleDoc);
-      setItems(querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-      setIsEmpty(querySnapshot.empty);
-    } catch (error) {
-      console.error("Error fetching items: ", error);
-    }
-  };
+    fetchItems(); // Call fetchItems directly inside useEffect
 
-  const calculateTotalItems = async () => {
-    try {
-      const totalItemsQuery = query(collection(db, "items"));
-      const totalItemsSnapshot = await getDocs(totalItemsQuery);
-      const totalItemsCount = totalItemsSnapshot.size;
-      setTotalItems(totalItemsCount);
-    } catch (error) {
-      console.error("Error calculating total items: ", error);
-    }
-  };
+    // Calculate total items
+    const calculateTotalItems = async () => {
+      try {
+        const totalItemsQuery = query(collection(db, "items"));
+        const totalItemsSnapshot = await getDocs(totalItemsQuery);
+        const totalItemsCount = totalItemsSnapshot.size;
+        setTotalItems(totalItemsCount);
+      } catch (error) {
+        console.error("Error calculating total items: ", error);
+      }
+    };
+
+    calculateTotalItems(); // Call calculateTotalItems directly inside useEffect
+
+  }, [currentPage, lastVisible]); // Depend on currentPage and lastVisible
 
   const totalPages = Math.ceil(totalItems / itemsPerPage);
 
@@ -100,9 +104,9 @@ const ListArticle = () => {
               <td style={styles.tableCell}>{item.title}</td>
               <td style={styles.tableCell} dangerouslySetInnerHTML={{ __html: item.content }} />
               <td style={styles.tableCell}>
-                {item.imageUrl && (
-                  <img src={item.imageUrl} alt={item.title} style={styles.image} />
-                )}
+              {item.imageUrl && (
+  <Image src={item.imageUrl} alt={item.title} width={100} height={100} style={styles.image} />
+)}
               </td>
               <td style={styles.tableCell}>
                 {item.createdAt && (
