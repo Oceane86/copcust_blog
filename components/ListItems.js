@@ -1,11 +1,13 @@
+//components/ListItems.js
+
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import db from '../utils/firestore';
 import { collection, query, orderBy, limit, startAfter, getDocs } from 'firebase/firestore';
 import DeleteItem from './DeleteItem';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit } from '@fortawesome/free-solid-svg-icons';
-import Image from 'next/image';
+import { faEdit } from '@fortawesome/free-solid-svg-icons'; 
+
 
 const ListItems = () => {
   const [items, setItems] = useState([]);
@@ -16,43 +18,43 @@ const ListItems = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchItems = async () => {
-      try {
-        let itemsQuery;
-        if (currentPage === 1) {
-          itemsQuery = query(
-            collection(db, "items"),
-            orderBy("title"),
-            limit(itemsPerPage)
-          );
-        } else {
-          itemsQuery = query(
-            collection(db, "items"),
-            orderBy("title"),
-            startAfter(lastVisible),
-            limit(itemsPerPage)
-          );
-        }
-        const querySnapshot = await getDocs(itemsQuery);
-        const lastVisibleDoc = querySnapshot.docs[querySnapshot.docs.length - 1];
-        setLastVisible(lastVisibleDoc);
-        setItems(querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-        setIsEmpty(querySnapshot.empty);
-      } catch (error) {
-        console.error("Error fetching items: ", error);
-      }
-    };
-
     fetchItems();
-
-  }, [currentPage, lastVisible]);
-
+  }, [fetchItems]); 
+  
+  
+  const fetchItems = async () => {
+    try {
+      let itemsQuery;
+      if (currentPage === 1) {
+        itemsQuery = query(
+          collection(db, "items"),
+          orderBy("title"),
+          limit(itemsPerPage)
+        );
+      } else {
+        itemsQuery = query(
+          collection(db, "items"),
+          orderBy("title"),
+          startAfter(lastVisible), // Utilise startAfter pour éviter de récupérer les mêmes articles
+          limit(itemsPerPage)
+        );
+      }
+      const querySnapshot = await getDocs(itemsQuery);
+      const lastVisibleDoc = querySnapshot.docs[querySnapshot.docs.length - 1];
+      setLastVisible(lastVisibleDoc);
+      setItems(querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+      setIsEmpty(querySnapshot.empty);
+    } catch (error) {
+      console.error("Error fetching items: ", error);
+    }
+  };
+  
   const handleNextPage = () => {
-    if (!isEmpty) {
+    if (!isEmpty) { // Vérifiez que la page suivante n'est pas vide avant de l'incrémenter
       setCurrentPage((prevPage) => prevPage + 1);
     }
   };
-
+  
   const handlePreviousPage = () => {
     if (currentPage > 1) {
       setCurrentPage((prevPage) => prevPage - 1);
@@ -81,7 +83,7 @@ const ListItems = () => {
                 dangerouslySetInnerHTML={{ __html: item.content }}
               />
               {item.imageUrl && (
-                <Image src={item.imageUrl} alt={item.title} width={100} height={100} style={styles.image} />
+                <img src={item.imageUrl} alt={item.title} style={styles.image} />
               )}
               {item.createdAt && (
                 <p style={styles.date}>Créé le : {item.createdAt.toDate().toLocaleDateString('fr-FR')}</p>
@@ -105,14 +107,15 @@ const ListItems = () => {
   );
 };
 
+// Styles
 const styles = {
   container: {
     display: 'flex',
     flexDirection: 'column',
-    minHeight: '100vh',
+    minHeight: '100vh', // Assure que le conteneur remplit toute la hauteur de la fenêtre
   },
   content: {
-    flex: '1 0 auto',
+    flex: '1 0 auto', // Permet au contenu de grandir, mais pas au-delà de la taille du contenu
     padding: '20px',
   },
   header: {
@@ -171,7 +174,7 @@ const styles = {
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: '20px',
-    marginBottom: '20px',
+    marginBottom: '20px', // Ajoute un espacement en bas pour séparer la pagination du contenu suivant
   },
   paginationButton: {
     backgroundColor: '#28a745',

@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Image from 'next/image';
 import db from '../utils/firestore';
 import { collection, query, orderBy, limit, startAfter, getDocs } from 'firebase/firestore';
 import DeleteItem from './DeleteItem';
@@ -104,9 +103,9 @@ const ListArticle = () => {
               <td style={styles.tableCell}>{item.title}</td>
               <td style={styles.tableCell} dangerouslySetInnerHTML={{ __html: item.content }} />
               <td style={styles.tableCell}>
-              {item.imageUrl && (
-  <Image src={item.imageUrl} alt={item.title} width={100} height={100} style={styles.image} />
-)}
+                {item.imageUrl && (
+                  <img src={item.imageUrl} alt={item.title} style={styles.image} />
+                )}
               </td>
               <td style={styles.tableCell}>
                 {item.createdAt && (
