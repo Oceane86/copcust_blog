@@ -6,7 +6,7 @@ import db from '../utils/firestore';
 import { collection, query, orderBy, limit, startAfter, getDocs } from 'firebase/firestore';
 import DeleteItem from './DeleteItem';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit } from '@fortawesome/free-solid-svg-icons'; // Remove unused icons to keep the code cleaner
+import { faEdit } from '@fortawesome/free-solid-svg-icons'; 
 
 const ListItems = () => {
   const [items, setItems] = useState([]);

@@ -1,26 +1,49 @@
-// src/app/page.js
-
-"use client";
+"use client"; // Ensure you're using the client-side rendering mode
 
 import { useEffect, useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import db from "../../utils/firestore";
 import { collection, query, orderBy, limit, startAfter, getDocs } from "firebase/firestore";
+import { getAuth, signInWithEmailAndPassword, signOut } from 'firebase/auth'; // Import auth modules
 import DeleteItem from "../../components/DeleteItem";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
 import Dashboard from "../../components/Dashboard";
 
-
-
+// Sample JSON data for user credentials
+const usersData = [
+  {
+    "email": "user1@example.com",
+    "password": "password1"
+  },
+  {
+    "email": "user2@example.com",
+    "password": "password2"
+  }
+];
 
 const ListItems = () => {
   const [items, setItems] = useState([]);
   const [lastVisible, setLastVisible] = useState(null);
   const [isEmpty, setIsEmpty] = useState(false);
   const itemsPerPage = 5;
+  const [user, setUser] = useState(null); // State to manage user authentication status
 
   useEffect(() => {
     fetchItems();
+  }, []);
+
+  useEffect(() => {
+    const auth = getAuth();
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        setUser(user); // Set user if authenticated
+      } else {
+        setUser(null); // Clear user if not authenticated
+      }
+    });
+
+    return () => unsubscribe(); // Clean up on unmount
   }, []);
 
   const fetchItems = async () => {
@@ -65,19 +88,71 @@ const ListItems = () => {
 
   const handleEdit = (id) => {
     console.log(`Editing item with id: ${id}`);
-    // Redirigez vers une page de modification, ou ouvrez un formulaire de modification en modale
+    // Redirect or open edit form
   };
 
   const handleDelete = (id) => {
     setItems((prevItems) => prevItems.filter((item) => item.id !== id));
   };
 
+  const handleLogin = async (email, password) => {
+    try {
+      // Simulate authentication against JSON data
+      const userFromData = usersData.find(user => user.email === email && user.password === password);
+
+      if (userFromData) {
+        setUser({ email: userFromData.email }); // Set user if credentials match
+        navigate('/dashboard'); // Navigate to dashboard or another route
+      } else {
+        console.error("Invalid credentials");
+      }
+    } catch (error) {
+      console.error("Error signing in: ", error);
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      const auth = getAuth();
+      await signOut(auth);
+      setUser(null); // Clear user on logout
+      navigate('/'); // Navigate to home page or another route
+    } catch (error) {
+      console.error("Error signing out: ", error);
+    }
+  };
+
   return (
     <div style={styles.container}>
       <h2 style={styles.header}>Dashboard - List of Items</h2>
-      <Dashboard />
-     
+      {user ? (
+        <div>
+          <p>Welcome, {user.email}!</p>
+          <button onClick={handleLogout}>Logout</button>
+          <Dashboard />
+        </div>
+      ) : (
+        <LoginForm onLogin={handleLogin} />
+      )}
     </div>
+  );
+};
+
+const LoginForm = ({ onLogin }) => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onLogin(email, password);
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
+      <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
+      <button type="submit">Login</button>
+    </form>
   );
 };
 
