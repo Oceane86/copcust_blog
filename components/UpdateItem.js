@@ -82,7 +82,7 @@ const UpdateItem = () => {
             value={content}
             onChange={setContent}
             style={styles.textarea}
-            placeholder="Entrez le contenu de l'article"
+            placeholder="Entrez le contenu de l&apos;article"
           />
         </div>
         <button type="submit" style={styles.submitButton}>Mettre à jour</button>
