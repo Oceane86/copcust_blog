@@ -29,7 +29,6 @@ const Dashboard = () => {
                 <FaPlus style={styles.icon} /> Ajouter un article
               </Link>
             </li>
-            {/* Ajoutez d'autres liens de navigation ici */}
           </ul>
         </nav>
         <main style={styles.mainContent}>
