@@ -1,3 +1,5 @@
+// components/ListArticle.js
+import React from "react";
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import db from '../utils/firestore';
@@ -5,7 +7,7 @@ import { collection, query, orderBy, limit, startAfter, getDocs } from 'firebase
 import DeleteItem from './DeleteItem';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
-import Image from "next/image";
+import Image from 'next/image';
 
 
 const ListArticle = () => {
@@ -16,52 +18,51 @@ const ListArticle = () => {
   const [totalItems, setTotalItems] = useState(0);
   const itemsPerPage = 4; // Afficher seulement 4 articles par page
   const navigate = useNavigate();
-
   useEffect(() => {
-    const fetchItems = async () => {
-      try {
-        let itemsQuery = query(
+    const fetchData = async () => {
+      await fetchItems();
+      calculateTotalItems();
+    };
+    fetchData();
+  }, [currentPage, fetchItems]);
+  
+  const fetchItems = async () => {
+    try {
+      let itemsQuery = query(
+        collection(db, "items"),
+        orderBy("title"),
+        limit(itemsPerPage)
+      );
+
+      if (currentPage > 1) {
+        itemsQuery = query(
           collection(db, "items"),
           orderBy("title"),
+          startAfter(lastVisible),
           limit(itemsPerPage)
         );
-
-        if (currentPage > 1) {
-          itemsQuery = query(
-            collection(db, "items"),
-            orderBy("title"),
-            startAfter(lastVisible),
-            limit(itemsPerPage)
-          );
-        }
-
-        const querySnapshot = await getDocs(itemsQuery);
-        const lastVisibleDoc = querySnapshot.docs[querySnapshot.docs.length - 1];
-        setLastVisible(lastVisibleDoc);
-        setItems(querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-        setIsEmpty(querySnapshot.empty);
-      } catch (error) {
-        console.error("Error fetching items: ", error);
       }
-    };
 
-    fetchItems(); // Call fetchItems directly inside useEffect
+      const querySnapshot = await getDocs(itemsQuery);
+      const lastVisibleDoc = querySnapshot.docs[querySnapshot.docs.length - 1];
+      setLastVisible(lastVisibleDoc);
+      setItems(querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+      setIsEmpty(querySnapshot.empty);
+    } catch (error) {
+      console.error("Error fetching items: ", error);
+    }
+  };
 
-    // Calculate total items
-    const calculateTotalItems = async () => {
-      try {
-        const totalItemsQuery = query(collection(db, "items"));
-        const totalItemsSnapshot = await getDocs(totalItemsQuery);
-        const totalItemsCount = totalItemsSnapshot.size;
-        setTotalItems(totalItemsCount);
-      } catch (error) {
-        console.error("Error calculating total items: ", error);
-      }
-    };
-
-    calculateTotalItems(); // Call calculateTotalItems directly inside useEffect
-
-  }, [currentPage, lastVisible]); // Depend on currentPage and lastVisible
+  const calculateTotalItems = async () => {
+    try {
+      const totalItemsQuery = query(collection(db, "items"));
+      const totalItemsSnapshot = await getDocs(totalItemsQuery);
+      const totalItemsCount = totalItemsSnapshot.size;
+      setTotalItems(totalItemsCount);
+    } catch (error) {
+      console.error("Error calculating total items: ", error);
+    }
+  };
 
   const totalPages = Math.ceil(totalItems / itemsPerPage);
 
@@ -105,9 +106,9 @@ const ListArticle = () => {
               <td style={styles.tableCell}>{item.title}</td>
               <td style={styles.tableCell} dangerouslySetInnerHTML={{ __html: item.content }} />
               <td style={styles.tableCell}>
-                {item.imageUrl && (
-                  <Image src={item.imageUrl} alt={item.title} style={styles.image} />
-                )}
+              {item.imageUrl && (
+  <Image src={item.imageUrl} alt={item.title} width={100} height={100} style={styles.image} />
+)}
               </td>
               <td style={styles.tableCell}>
                 {item.createdAt && (

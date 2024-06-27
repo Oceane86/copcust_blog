@@ -1,5 +1,5 @@
 // components/AddItem.js
-
+import React from "react";
 import { useState } from 'react';
 import db from '../utils/firestore';
 import { collection, addDoc, Timestamp } from 'firebase/firestore';

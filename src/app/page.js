@@ -1,6 +1,7 @@
 "use client"; 
+import React from "react";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
+// import { useRouter } from "next/router";
 import { getAuth, signOut } from 'firebase/auth'; 
 import db from "../../utils/firestore";
 import { collection, query, orderBy, limit, startAfter, getDocs } from "firebase/firestore";
@@ -17,10 +18,8 @@ const usersData = [
     "password": "password2"
   },
   {
-    {
-      "email": "admin@example.com",
-      "password": "admin"
-    }
+    "email": "admin@example.com",
+    "password": "admin"
   }
 ];
 
@@ -30,7 +29,6 @@ const ListItems = () => {
   const [isEmpty, setIsEmpty] = useState(false);
   const itemsPerPage = 5;
   const [user, setUser] = useState(null); 
-  const router = useRouter();
 
   useEffect(() => {
     fetchItems();

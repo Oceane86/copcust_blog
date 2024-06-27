@@ -1,3 +1,5 @@
+// components/UpdateItem.js
+import React from "react";
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { db } from '../utils/firebaseConfig';

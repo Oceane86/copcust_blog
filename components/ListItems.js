@@ -1,12 +1,12 @@
-// components/ListItems.js
-import { useState, useEffect, useCallback } from 'react';
+//components/ListItems.js
+import React from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import db from '../utils/firestore';
 import { collection, query, orderBy, limit, startAfter, getDocs } from 'firebase/firestore';
 import DeleteItem from './DeleteItem';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit } from '@fortawesome/free-solid-svg-icons'; 
-import Image from "next/image";
+import { faEdit } from '@fortawesome/free-solid-svg-icons'; // Remove unused icons to keep the code cleaner
 
 const ListItems = () => {
   const [items, setItems] = useState([]);
@@ -16,7 +16,11 @@ const ListItems = () => {
   const itemsPerPage = 2; // Afficher seulement 2 articles par page
   const navigate = useNavigate();
 
-  const fetchItems = useCallback(async () => {
+  useEffect(() => {
+    fetchItems();
+  }, [currentPage]);
+
+  const fetchItems = async () => {
     try {
       let itemsQuery;
       if (currentPage === 1) {
@@ -29,7 +33,7 @@ const ListItems = () => {
         itemsQuery = query(
           collection(db, "items"),
           orderBy("title"),
-          startAfter(lastVisible),
+          startAfter(lastVisible), // Utilise startAfter pour éviter de récupérer les mêmes articles
           limit(itemsPerPage)
         );
       }
@@ -41,14 +45,10 @@ const ListItems = () => {
     } catch (error) {
       console.error("Error fetching items: ", error);
     }
-  }, [currentPage, lastVisible]);
-
-  useEffect(() => {
-    fetchItems();
-  }, [fetchItems]);
-
+  };
+  
   const handleNextPage = () => {
-    if (!isEmpty) { 
+    if (!isEmpty) { // Vérifiez que la page suivante n'est pas vide avant de l'incrémenter
       setCurrentPage((prevPage) => prevPage + 1);
     }
   };
@@ -81,7 +81,7 @@ const ListItems = () => {
                 dangerouslySetInnerHTML={{ __html: item.content }}
               />
               {item.imageUrl && (
-                <Image src={item.imageUrl} alt={item.title} style={styles.image} />
+                <img src={item.imageUrl} alt={item.title} style={styles.image} />
               )}
               {item.createdAt && (
                 <p style={styles.date}>Créé le : {item.createdAt.toDate().toLocaleDateString('fr-FR')}</p>
@@ -110,10 +110,10 @@ const styles = {
   container: {
     display: 'flex',
     flexDirection: 'column',
-    minHeight: '100vh', 
+    minHeight: '100vh', // Assure que le conteneur remplit toute la hauteur de la fenêtre
   },
   content: {
-    flex: '1 0 auto', 
+    flex: '1 0 auto', // Permet au contenu de grandir, mais pas au-delà de la taille du contenu
     padding: '20px',
   },
   header: {
