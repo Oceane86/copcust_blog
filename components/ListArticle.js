@@ -5,6 +5,8 @@ import { collection, query, orderBy, limit, startAfter, getDocs } from 'firebase
 import DeleteItem from './DeleteItem';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
+import Image from "next/image";
+
 
 const ListArticle = () => {
   const [items, setItems] = useState([]);
@@ -104,7 +106,7 @@ const ListArticle = () => {
               <td style={styles.tableCell} dangerouslySetInnerHTML={{ __html: item.content }} />
               <td style={styles.tableCell}>
                 {item.imageUrl && (
-                  <img src={item.imageUrl} alt={item.title} style={styles.image} />
+                  <Image src={item.imageUrl} alt={item.title} style={styles.image} />
                 )}
               </td>
               <td style={styles.tableCell}>
