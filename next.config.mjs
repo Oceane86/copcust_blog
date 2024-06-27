@@ -1,23 +1,24 @@
-// next.config.js
-
-
 /** @type {import('next').NextConfig} */
+import { resolve } from 'path';
+import { fileURLToPath } from 'url';
+
+const require = (path) => import(fileURLToPath(new URL(path, import.meta.url)));
+
 const nextConfig = {
-    webpack: (config, { defaultLoaders }) => {
+    webpack: async (config, { defaultLoaders }) => {
       defaultLoaders.babel.options = {
         ...defaultLoaders.babel.options,
         presets: [
-          require.resolve('next/babel'),
-          '@babel/preset-env', 
+          (await require('next/babel')).default,
+          (await require('@babel/preset-env')).default,
         ],
         plugins: [
-          '@babel/plugin-proposal-class-properties', 
+          (await require('@babel/plugin-proposal-class-properties')).default,
         ],
       };
   
       return config;
     },
-  };
-  
-  export default nextConfig;
-  
+};
+
+export default nextConfig;
