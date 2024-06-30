@@ -1,7 +1,8 @@
+// src/app/page.js
+
 "use client"; 
 import React from "react";
 import { useEffect, useState } from "react";
-// import { useRouter } from "next/router";
 import { getAuth, signOut } from 'firebase/auth'; 
 import db from "../../utils/firestore";
 import { collection, query, orderBy, limit, startAfter, getDocs } from "firebase/firestore";
@@ -64,15 +65,13 @@ const ListItems = () => {
     return () => unsubscribe(); 
   };
 
-
-
   const handleLogin = async (email, password) => {
     try {
       const userFromData = usersData.find(user => user.email === email && user.password === password);
 
       if (userFromData) {
         setUser({ email: userFromData.email }); 
-        router.push('/dashboard');
+        router.push('/dashboard'); // Utilisez router pour la navigation
       } else {
         console.error("Invalid credentials");
       }
@@ -86,7 +85,7 @@ const ListItems = () => {
       const auth = getAuth();
       await signOut(auth);
       setUser(null); 
-      router.push('/'); 
+      router.push('/'); // Utilisez router pour la navigation
     } catch (error) {
       console.error("Error signing out: ", error);
     }

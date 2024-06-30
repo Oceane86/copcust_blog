@@ -33,7 +33,7 @@ const ListItems = () => {
         itemsQuery = query(
           collection(db, "items"),
           orderBy("title"),
-          startAfter(lastVisible), // Utilise startAfter pour éviter de récupérer les mêmes articles
+          startAfter(lastVisible),
           limit(itemsPerPage)
         );
       }

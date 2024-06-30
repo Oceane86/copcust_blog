@@ -1,28 +1,26 @@
-// components/AddItem.js
-import React from "react";
-import { useState } from 'react';
-import db from '../utils/firestore';
+ // components/AddItem.js
+
+
+ import React, { useState, useEffect } from "react";
 import { collection, addDoc, Timestamp } from 'firebase/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import ReactQuill from 'react-quill';
+import dynamic from 'next/dynamic'; // Importer dynamic pour charger ReactQuill dynamiquement
 import 'react-quill/dist/quill.snow.css';
 
-let useNavigate;
-if (typeof document !== 'undefined') {
-  // Seul le navigateur dispose de document
-  useNavigate = require('react-router-dom').useNavigate;
-} else {
-  // Environnement de rendu côté serveur ou autre
-  // Utiliser un stub pour useNavigate pour éviter les erreurs
-  useNavigate = () => null;
-}
+const ReactQuill = dynamic(() => import('react-quill'), { ssr: false }); // Charger ReactQuill dynamiquement avec ssr: false
 
 const AddItem = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [image, setImage] = useState(null);
-  const [message, setMessage] = useState(''); // État pour le message de confirmation
-  const navigate = useNavigate();
+  const [message, setMessage] = useState('');
+
+  useEffect(() => {
+    if (typeof document !== 'undefined') {
+      // Code qui utilise document ici (par exemple, ajouter des classes CSS)
+      document.getElementById('someElementId').classList.add('active');
+    }
+  }, []);
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
@@ -35,7 +33,6 @@ const AddItem = () => {
       let imageUrl = '';
 
       if (image) {
-        // Logique pour télécharger l'image et obtenir l'URL
         imageUrl = await uploadImage(image);
       }
 
@@ -46,40 +43,25 @@ const AddItem = () => {
         createdAt: Timestamp.fromDate(new Date()),
       };
 
-      console.log("Item Data:", itemData); // Ajout du console.log ici
-
+      // Assume `db` est initialisé correctement dans votre application
       await addDoc(collection(db, "items"), itemData);
-
-      console.log("Document successfully written!");
-      setMessage('Article créé avec succès !'); // Mettre à jour le message de confirmation
-      navigate('/'); // Rediriger vers la page de liste après un court délai
+      setMessage('Article créé avec succès !');
     } catch (error) {
       setMessage('Erreur lors de la création de l\'article.');
       console.error("Error writing document: ", error);
     }
   };
 
-  // Fonction pour télécharger l'image et obtenir l'URL
   const uploadImage = async (image) => {
     try {
-      // Obtenir la référence au stockage Firebase
       const storage = getStorage();
-
-      // Créer une référence au chemin où l'image sera stockée dans le stockage Firebase
       const storageRef = ref(storage, `images/${image.name}`);
-
-      // Télécharger l'image dans le stockage Firebase
       const snapshot = await uploadBytes(storageRef, image);
-
-      // Obtenir l'URL de téléchargement de l'image
       const downloadURL = await getDownloadURL(snapshot.ref);
-
-      console.log("Download URL:", downloadURL); // Ajout du console.log ici
-
-      return downloadURL; // Retourner l'URL de l'image téléchargée
+      return downloadURL;
     } catch (error) {
       console.error("Error uploading image: ", error);
-      throw error; // Lancer une erreur pour la gérer dans la fonction appelante si nécessaire
+      throw error;
     }
   };
 
@@ -104,6 +86,15 @@ const AddItem = () => {
             onChange={setContent}
             style={styles.textarea}
             placeholder="Entrez le contenu de l'article"
+            modules={{
+              toolbar: [
+                [{ header: '1' }, { header: '2' }, { font: [] }],
+                [{ list: 'ordered' }, { list: 'bullet' }],
+                ['bold', 'italic', 'underline'],
+                ['link', 'image'],
+                ['clean'],
+              ],
+            }}
           />
         </div>
         <div style={styles.formGroup}>
@@ -112,16 +103,15 @@ const AddItem = () => {
         </div>
         <button type="submit" style={styles.submitButton}>Créer</button>
       </form>
-      {message && <p style={styles.message}>{message}</p>} {/* Afficher le message de confirmation */}
+      {message && <p style={styles.message}>{message}</p>}
       <div style={styles.preview}>
         <h3>Prévisualisation :</h3>
-        <div dangerouslySetInnerHTML={{ __html: content }} /> {/* Rendre le contenu HTML */}
+        <div dangerouslySetInnerHTML={{ __html: content }} />
       </div>
     </div>
   );
 };
 
-// Styles
 const styles = {
   content: {
     padding: '20px',
@@ -148,7 +138,7 @@ const styles = {
     border: '1px solid #ced4da',
   },
   textarea: {
-    height: '300px', // Ajuster la hauteur selon vos besoins
+    height: '300px',
     border: '1px solid #ced4da',
     borderRadius: '4px',
   },

@@ -1,11 +1,14 @@
 // components/UpdateItem.js
-import React from "react";
-import { useState, useEffect } from 'react';
+
+
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { db } from '../utils/firebaseConfig';
 import { doc, updateDoc, getDoc } from 'firebase/firestore';
-import ReactQuill from 'react-quill';
+import { db } from '../utils/firebaseConfig';
+import dynamic from 'next/dynamic'; // Import dynamic from next/dynamic for dynamic import
 import 'react-quill/dist/quill.snow.css';
+
+const ReactQuill = dynamic(() => import('react-quill'), { ssr: false }); // Dynamic import of ReactQuill with ssr: false
 
 const UpdateItem = () => {
   const { id } = useParams();
@@ -14,27 +17,27 @@ const UpdateItem = () => {
   const [message, setMessage] = useState('');
 
   useEffect(() => {
-    if (id) {
-      fetchItem(id);
-    }
-  }, [id]);
+    const fetchItem = async () => {
+      try {
+        if (!id) return;
 
-  const fetchItem = async (id) => {
-    try {
-      const docRef = doc(db, 'items', id);
-      const docSnap = await getDoc(docRef);
+        const docRef = doc(db, 'items', id);
+        const docSnap = await getDoc(docRef);
 
-      if (docSnap.exists()) {
-        const { title, content } = docSnap.data();
-        setTitle(title);
-        setContent(content);
-      } else {
-        console.error('No such document!');
+        if (docSnap.exists()) {
+          const { title, content } = docSnap.data();
+          setTitle(title);
+          setContent(content);
+        } else {
+          console.error('No such document!');
+        }
+      } catch (error) {
+        console.error('Error fetching document:', error);
       }
-    } catch (error) {
-      console.error('Error fetching document:', error);
-    }
-  };
+    };
+
+    fetchItem();
+  }, [id]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -52,11 +55,8 @@ const UpdateItem = () => {
 
       const docRef = doc(db, 'items', id);
       await updateDoc(docRef, itemData);
-      setMessage('Document successfully updated!'); // Mettre à jour le message de confirmation
+      setMessage('Document successfully updated!');
       console.log('Document successfully updated with ID: ', id);
-
-      // Réinitialiser les champs ou rediriger l'utilisateur, etc.
-      // Exemple: resetForm();
 
     } catch (error) {
       setMessage('Error updating document.');
@@ -66,7 +66,7 @@ const UpdateItem = () => {
 
   return (
     <div style={styles.content}>
-      <h2 style={styles.header}>Modifier l&apos;Article</h2>
+      <h2 style={styles.header}>Modifier l'Article</h2>
       <form onSubmit={handleSubmit} style={styles.form}>
         <div style={styles.formGroup}>
           <label style={styles.label}>Titre</label>
@@ -75,7 +75,7 @@ const UpdateItem = () => {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             style={styles.input}
-            placeholder="Entrez le titre de l&apos;article"
+            placeholder="Entrez le titre de l'article"
           />
         </div>
         <div style={styles.formGroup}>
@@ -84,12 +84,12 @@ const UpdateItem = () => {
             value={content}
             onChange={setContent}
             style={styles.textarea}
-            placeholder="Entrez le contenu de l&apos;article"
+            placeholder="Entrez le contenu de l'article"
           />
         </div>
         <button type="submit" style={styles.submitButton}>Mettre à jour</button>
       </form>
-      {message && <p style={styles.message}>{message}</p>} {/* Afficher le message de confirmation */}
+      {message && <p style={styles.message}>{message}</p>}
     </div>
   );
 };

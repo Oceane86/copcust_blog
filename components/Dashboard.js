@@ -1,5 +1,6 @@
-// components/Dashboard.js
-import React from "react";
+// components/Dashboard
+
+import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import ListItems from './ListItems';
 import AddItem from './AddItem';
@@ -28,6 +29,7 @@ const Dashboard = () => {
                 <FaPlus style={styles.icon} /> Ajouter un article
               </Link>
             </li>
+            {/* Ajoutez d'autres liens de navigation ici */}
           </ul>
         </nav>
         <main style={styles.mainContent}>
