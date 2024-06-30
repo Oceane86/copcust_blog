@@ -41,7 +41,7 @@ const Login = ({ onLogin }) => {
           required
           style={styles.input}
         />
-        <button type="submit" style={styles.button}>Login</button>
+        <button type="submit" style={styles.button}>Connexion</button>
       </form>
     </div>
   );

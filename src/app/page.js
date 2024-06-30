@@ -71,7 +71,7 @@ const ListItems = () => {
 
       if (userFromData) {
         setUser({ email: userFromData.email }); 
-        router.push('/dashboard'); // Utilisez router pour la navigation
+        router.push('/dashboard'); 
       } else {
         console.error("Invalid credentials");
       }
@@ -85,7 +85,7 @@ const ListItems = () => {
       const auth = getAuth();
       await signOut(auth);
       setUser(null); 
-      router.push('/'); // Utilisez router pour la navigation
+      router.push('/');
     } catch (error) {
       console.error("Error signing out: ", error);
     }
@@ -93,11 +93,11 @@ const ListItems = () => {
 
   return (
     <div style={styles.container}>
-      <h2 style={styles.header}>Dashboard - List of Items</h2>
+      <h2 style={styles.header}>Admin CopCust</h2>
       {user ? (
         <div>
-          <p>Welcome, {user.email}!</p>
-          <button onClick={handleLogout}>Logout</button>
+          <p>Bienvenue, {user.email}!</p>
+          <button onClick={handleLogout}>Déconnexion</button>
           <Dashboard />
         </div>
       ) : (
@@ -120,14 +120,14 @@ const LoginForm = ({ onLogin }) => {
     <form onSubmit={handleSubmit}>
       <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
       <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
-      <button type="submit">Login</button>
+      <button type="submit">Connexion</button>
     </form>
   );
 };
 
 const styles = {
   container: {
-    maxWidth: '800px',
+    width: '90%', 
     margin: '0 auto',
     padding: '20px',
     textAlign: 'center',

@@ -1,30 +1,27 @@
 {
   "..\\components\\AddItem.js -> react-quill": {
-    "id": 8250,
+    "id": "..\\components\\AddItem.js -> react-quill",
     "files": [
-      "static/chunks/8012d7e2.82499a2c7b6ce513.js",
-      "static/chunks/250.a13e1e69fc8d94c7.js"
+      "static/chunks/_app-pages-browser_node_modules_react-quill_lib_index_js.js"
     ]
   },
   "..\\components\\UpdateItem.js -> react-quill": {
-    "id": 71167,
+    "id": "..\\components\\UpdateItem.js -> react-quill",
     "files": [
-      "static/chunks/8012d7e2.82499a2c7b6ce513.js",
-      "static/chunks/250.a13e1e69fc8d94c7.js",
-      "static/chunks/eabe11fc.6506323cce2dcd1a.js",
-      "static/chunks/167.4d90b995e52ed221.js"
+      "static/chunks/_app-pages-browser_node_modules_react-quill_lib_index_js.js",
+      "static/chunks/node_modules_react-quill_lib_index_js.js"
     ]
   },
   "..\\node_modules\\next\\dist\\client\\index.js -> ../pages/_app": {
-    "id": 68996,
+    "id": "..\\node_modules\\next\\dist\\client\\index.js -> ../pages/_app",
     "files": [
-      "static/chunks/996.11e8a9732e8d6d2f.js"
+      "static/chunks/node_modules_next_dist_pages__app_js.js"
     ]
   },
   "..\\node_modules\\next\\dist\\client\\index.js -> ../pages/_error": {
-    "id": 63997,
+    "id": "..\\node_modules\\next\\dist\\client\\index.js -> ../pages/_error",
     "files": [
-      "static/chunks/997.9e205449881af92d.js"
+      "static/chunks/node_modules_next_dist_pages__error_js.js"
     ]
   }
 }

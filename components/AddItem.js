@@ -1,7 +1,7 @@
  // components/AddItem.js
 
 
- import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { collection, addDoc, Timestamp } from 'firebase/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import dynamic from 'next/dynamic'; // Importer dynamic pour charger ReactQuill dynamiquement
@@ -17,10 +17,13 @@ const AddItem = () => {
 
   useEffect(() => {
     if (typeof document !== 'undefined') {
-      // Code qui utilise document ici (par exemple, ajouter des classes CSS)
-      document.getElementById('someElementId').classList.add('active');
+      // Vérifier si l'élément existe avant d'ajouter une classe
+      const someElement = document.getElementById('someElementId');
+      if (someElement) {
+        someElement.classList.add('active');
+      }
     }
-  }, []);
+  }, []); // [] signifie que useEffect s'exécute une seule fois après le premier rendu
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
