@@ -5,10 +5,8 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { doc, updateDoc, getDoc } from 'firebase/firestore';
 import { db } from '../utils/firebaseConfig';
-import dynamic from 'next/dynamic'; // Import dynamic from next/dynamic for dynamic import
+import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-
-const ReactQuill = dynamic(() => import('react-quill'), { ssr: false }); // Dynamic import of ReactQuill with ssr: false
 
 const UpdateItem = () => {
   const { id } = useParams();

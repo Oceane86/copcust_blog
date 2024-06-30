@@ -1,12 +1,13 @@
 //components/ListItems.js
-import React from 'react';
-import { useState, useEffect } from 'react';
+
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import db from '../utils/firestore';
 import { collection, query, orderBy, limit, startAfter, getDocs } from 'firebase/firestore';
 import DeleteItem from './DeleteItem';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit } from '@fortawesome/free-solid-svg-icons'; // Remove unused icons to keep the code cleaner
+import { faEdit } from '@fortawesome/free-solid-svg-icons';
+import Image from 'next/image';
 
 const ListItems = () => {
   const [items, setItems] = useState([]);
@@ -48,7 +49,7 @@ const ListItems = () => {
   };
   
   const handleNextPage = () => {
-    if (!isEmpty) { // Vérifiez que la page suivante n'est pas vide avant de l'incrémenter
+    if (!isEmpty) {
       setCurrentPage((prevPage) => prevPage + 1);
     }
   };
@@ -75,14 +76,16 @@ const ListItems = () => {
         <div style={styles.grid}>
           {items.map((item) => (
             <div key={item.id} style={styles.card}>
+              {item.imageUrl && (
+                <div style={styles.imageContainer}>
+                  <Image src={item.imageUrl} alt={item.title} width={200} height={150} layout="responsive" />
+                </div>
+              )}
               <h3 style={styles.title}>{item.title}</h3>
               <div
                 style={styles.articleContent}
                 dangerouslySetInnerHTML={{ __html: item.content }}
               />
-              {item.imageUrl && (
-                <img src={item.imageUrl} alt={item.title} style={styles.image} />
-              )}
               {item.createdAt && (
                 <p style={styles.date}>Créé le : {item.createdAt.toDate().toLocaleDateString('fr-FR')}</p>
               )}
@@ -143,12 +146,10 @@ const styles = {
     marginBottom: '10px',
     paddingLeft: '10px',
   },
-  image: {
-    width: '100px',
-    height: '100px',
-    objectFit: 'cover',
-    borderRadius: '4px',
-    marginBottom: '10px',
+  imageContainer: {
+    marginBottom: '50px',
+    maxWidth: '30%', // Adapter la taille maximale selon les besoins
+    overflow: 'hidden', // Assure que l'image ne dépasse pas le conteneur
   },
   date: {
     fontSize: '12px',
@@ -172,7 +173,7 @@ const styles = {
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: '20px',
-    marginBottom: '20px', // Ajoute un espacement en bas pour séparer la pagination du contenu suivant
+    marginBottom: '20px',
   },
   paginationButton: {
     backgroundColor: '#28a745',
