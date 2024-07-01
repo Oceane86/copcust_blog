@@ -15,7 +15,7 @@ const ListArticle = () => {
   const [isEmpty, setIsEmpty] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalItems, setTotalItems] = useState(0);
-  const itemsPerPage = 4; // Afficher seulement 4 articles par page
+  const itemsPerPage = 4; 
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -24,7 +24,7 @@ const ListArticle = () => {
       calculateTotalItems();
     };
     fetchData();
-  }, [currentPage]); // Ne pas inclure `fetchItems` comme dépendance
+  }, [currentPage]); 
 
   const fetchItems = async () => {
     try {
