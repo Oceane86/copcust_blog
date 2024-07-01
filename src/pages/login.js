@@ -4,8 +4,8 @@
 import React from 'react';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
-import firebase from 'firebase/compat/app'; // Utiliser 'firebase/compat/app' pour les versions compatibles avec v9
-import 'firebase/compat/auth'; // Utiliser 'firebase/compat/auth' pour les versions compatibles avec v9
+import firebase from 'firebase/compat/app'; 
+import 'firebase/compat/auth';
 import { firebaseConfig } from '../../utils/firebaseConfig'; 
 
 if (!firebase.apps.length) {
@@ -21,7 +21,7 @@ export default function Login() {
     e.preventDefault();
     try {
       await firebase.auth().signInWithEmailAndPassword(email, password);
-      router.push('/'); // Redirection après la connexion réussie
+      router.push('/'); 
     } catch (error) {
       console.error('Erreur de connexion :', error.message);
     }
