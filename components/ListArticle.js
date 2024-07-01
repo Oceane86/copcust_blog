@@ -188,7 +188,7 @@ const styles = {
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: '20px',
-    marginBottom: '20px', // Espacement en dessous du tableau
+    marginBottom: '20px',
   },
   paginationButton: {
     backgroundColor: '#28a745',
