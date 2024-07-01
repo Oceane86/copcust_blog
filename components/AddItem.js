@@ -1,8 +1,6 @@
  // components/AddItem.js
 
-
-
- import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import db from '../utils/firestore';
 import { collection, addDoc, Timestamp } from 'firebase/firestore';
@@ -107,7 +105,7 @@ const AddItem = () => {
               onChange={setContent}
               modules={modules}
               formats={formats}
-              style={{ height: '300px' }} // Adjust height as needed
+              style={{ height: '300px' }}
             />
           )}
         </div>
