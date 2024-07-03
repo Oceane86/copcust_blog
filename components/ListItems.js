@@ -14,7 +14,7 @@ const ListItems = () => {
   const [lastVisible, setLastVisible] = useState(null);
   const [isEmpty, setIsEmpty] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 2; // Afficher seulement 2 articles par page
+  const itemsPerPage = 2; 
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -113,10 +113,10 @@ const styles = {
   container: {
     display: 'flex',
     flexDirection: 'column',
-    minHeight: '100vh', // Assure que le conteneur remplit toute la hauteur de la fenêtre
+    minHeight: '100vh', 
   },
   content: {
-    flex: '1 0 auto', // Permet au contenu de grandir, mais pas au-delà de la taille du contenu
+    flex: '1 0 auto', 
     padding: '20px',
   },
   header: {
@@ -148,8 +148,8 @@ const styles = {
   },
   imageContainer: {
     marginBottom: '50px',
-    maxWidth: '30%', // Adapter la taille maximale selon les besoins
-    overflow: 'hidden', // Assure que l'image ne dépasse pas le conteneur
+    maxWidth: '30%',
+    overflow: 'hidden', 
   },
   date: {
     fontSize: '12px',
