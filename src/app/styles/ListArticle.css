@@ -1,0 +1,133 @@
+/* styles/ListArticle.css */
+
+/* Styles de base */
+.list-article {
+    padding: 20px;
+    background-color: #f9f9f9;
+  }
+  
+  .list-article h2 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  /* Conteneur des cartes d'articles */
+  .article-list-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+  }
+  
+  /* Carte d'article */
+  .article-card {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 15px;
+    max-width: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  
+  /* Image de l'article */
+  .article-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 10px;
+  }
+  
+  /* Contenu de l'article */
+  .article-content {
+    flex: 1;
+  }
+  
+  /* Date de publication */
+  .date {
+    font-size: 14px;
+    color: #555;
+    margin: 10px 0;
+  }
+  
+  /* Boutons d'action */
+  .actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+  }
+  
+  .edit-button {
+    background-color: transparent;
+    border: none;
+    color: #007bff;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  /* Pagination */
+  .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  
+  .pagination-button {
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 4px;
+    outline: none;
+    box-shadow: none;
+  }
+  
+  .pagination-button:disabled {
+    background-color: #6c757d;
+    cursor: not-allowed;
+  }
+  
+  .pagination-text {
+    font-size: 16px;
+    font-weight: bold;
+  }
+  
+  /* Styles responsives pour les petits écrans */
+  @media (max-width: 768px) {
+    .article-list-container {
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .article-card {
+      max-width: 100%;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .article-card {
+      padding: 10px;
+    }
+  
+    .article-image {
+      height: 150px;
+    }
+  
+    .pagination {
+      flex-direction: column;
+      gap: 5px;
+    }
+  
+    .pagination-button {
+      padding: 8px 16px;
+    }
+  }
+  

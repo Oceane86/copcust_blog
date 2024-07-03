@@ -6,7 +6,6 @@ import ListItems from './ListItems';
 import AddItem from './AddItem';
 import ListArticle from './ListArticle';
 import UpdateItem from './UpdateItem';
-import ViewItem from './ViewItem';
 import { FaList, FaPlus, FaHome } from 'react-icons/fa'; 
 
 const Dashboard = () => {
@@ -30,11 +29,7 @@ const Dashboard = () => {
                 <FaPlus style={styles.icon} /> Ajouter un article
               </Link>
             </li>
-            <li style={styles.navItem}>
-              <Link to="/view" style={styles.navLink}>
-                <FaPlus style={styles.icon} /> Voir les articles
-              </Link>
-            </li>
+           
           </ul>
         </nav>
         <main style={styles.mainContent}>
@@ -43,7 +38,6 @@ const Dashboard = () => {
             <Route path="/list" element={<ListArticle />} /> 
             <Route path="/add" element={<AddItem />} />
             <Route path="/edit/:id" element={<UpdateItem />} />
-            <Route path="/view" element={<ViewItem />} />
 
 
           </Routes>

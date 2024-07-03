@@ -1,18 +1,18 @@
 {
   "..\\components\\AddItem.js -> react-quill": {
-    "id": 8250,
+    "id": "..\\components\\AddItem.js -> react-quill",
     "files": []
   },
   "..\\node_modules\\next\\dist\\client\\index.js -> ../pages/_app": {
-    "id": 68996,
+    "id": "..\\node_modules\\next\\dist\\client\\index.js -> ../pages/_app",
     "files": [
-      "static/chunks/996.11e8a9732e8d6d2f.js"
+      "static/chunks/node_modules_next_dist_pages__app_js.js"
     ]
   },
   "..\\node_modules\\next\\dist\\client\\index.js -> ../pages/_error": {
-    "id": 63997,
+    "id": "..\\node_modules\\next\\dist\\client\\index.js -> ../pages/_error",
     "files": [
-      "static/chunks/997.9e205449881af92d.js"
+      "static/chunks/node_modules_next_dist_pages__error_js.js"
     ]
   }
 }

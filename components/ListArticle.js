@@ -1,7 +1,5 @@
-// components/ListArticle.js
-
-
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import db from '../utils/firestore';
 import { collection, query, orderBy, limit, startAfter, getDocs } from 'firebase/firestore';
@@ -17,14 +15,14 @@ const ListArticle = () => {
   const [totalItems, setTotalItems] = useState(0);
   const itemsPerPage = 4; // Afficher seulement 4 articles par page
   const navigate = useNavigate();
-
   useEffect(() => {
     const fetchData = async () => {
       await fetchItems();
       calculateTotalItems();
     };
     fetchData();
-  }, [currentPage]); // Ne pas inclure `fetchItems` comme dépendance
+  }, [currentPage, fetchItems]);
+  
 
   const fetchItems = async () => {
     try {
